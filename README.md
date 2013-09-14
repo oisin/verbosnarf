@@ -1,4 +1,3 @@
-
 Small app to read and store AWS S3 bucket stats for the Verbose podcast. Each day it fetches the previous day's logfiles for the podcast bucket, isolates those log entries that are relevant for podcast downloads, then saves them in a database. On the front end it provides simple stats visually to show ongoing activity over period, including downloads, locations, regular downloaders and downloading agents.
 
 ### TODO
@@ -6,6 +5,8 @@ Small app to read and store AWS S3 bucket stats for the Verbose podcast. Each da
  * Use the Amazon request id to make sure we don't double up in the database at any point
  * Make the date range work
  * Create first stab at front end page with simple results!
+ * Apply IP lookup to store country/city data based on IP
+ * Mark locations on map
  * Add a way to tell it to read arbitrary dates to fill the db
  * Deploy to PaaS of some sort
  * Read in all the things
