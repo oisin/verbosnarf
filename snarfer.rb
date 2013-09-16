@@ -43,7 +43,7 @@ class Snarfer
     throw ArgumentError.new("Can only get logs in the past") if (date.eql?(Time.now.utc.to_date))
     activity = Activity.new({ start: Time.now.utc})
     begin
-      activity.downloads = download_objects(@s3.buckets[@bucket_name], 'logs/' + date.strftime("%Y-%m-%d"))
+      activity.processed = download_objects(@s3.buckets[@bucket_name], 'logs/' + date.strftime("%Y-%m-%d"))
       activity.end = Time.now.utc
     rescue StandardError => e
       activity.exception = e.to_s
