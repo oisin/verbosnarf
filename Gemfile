@@ -14,4 +14,5 @@ group :test do
   gem 'dm-sqlite-adapter'
   gem 'minitest', '~> 3.0'
   gem 'coveralls', require: false
+  gem 'timecop'
 end
