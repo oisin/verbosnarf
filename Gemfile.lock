@@ -76,6 +76,7 @@ GEM
     multi_json (1.8.0)
     nokogiri (1.5.10)
     rack (1.5.2)
+    rake (10.1.0)
     simplecov (0.7.1)
       multi_json (~> 1.0)
       simplecov-html (~> 0.7.1)
@@ -97,5 +98,6 @@ DEPENDENCIES
   dm-postgres-adapter
   dm-sqlite-adapter
   minitest (~> 3.0)
+  rake
   simplecov
   thin
