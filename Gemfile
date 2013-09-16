@@ -13,5 +13,5 @@ end
 group :test do
   gem 'dm-sqlite-adapter'
   gem 'minitest', '~> 3.0'
-  gem 'simplecov'
+  gem 'coveralls', require: false
 end

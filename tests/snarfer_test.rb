@@ -1,8 +1,13 @@
 $: << File.dirname(__FILE__) + "/.."
 
-require 'simplecov'
-SimpleCov.start 
-SimpleCov.command_name 'snarfer units'
+# Produce local and Coveralls coverage
+require 'coveralls'
+Coveralls.wear!
+SimpleCov.command_name 'Unit Tests'
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::HTMLFormatter,
+  Coveralls::SimpleCov::Formatter
+]
 
 require 'minitest/autorun'
 require 'snarfer'
