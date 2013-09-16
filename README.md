@@ -1,6 +1,6 @@
 [![Build Status](https://api.travis-ci.org/oisin/verbosnarf.png?branch=master)](https://travis-ci.org/oisin/verbosnarf)
 
-[![Coverage Status](https://coveralls.io/repos/mezis/blurrily/badge.png)](https://coveralls.io/r/mezis/blurrily)
+[![Coverage Status](https://coveralls.io/repos/oisin/verbosnarf/badge.png)](https://coveralls.io/r/oisin/verbosnarf)
 
 
 Small app to read and store AWS S3 bucket stats for the Verbose podcast. Each day it fetches the previous day's logfiles for the podcast bucket, isolates those log entries that are relevant for podcast downloads, then saves them in a database. On the front end it provides simple stats visually to show ongoing activity over period, including downloads, locations, regular downloaders and downloading agents.
