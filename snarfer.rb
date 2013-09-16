@@ -11,9 +11,13 @@ class Snarfer
       secret_access_key: secret,
       region: 'eu-west-1'
     )
+    
     Download.raise_on_save_failure = true
     UserAgent.raise_on_save_failure = true
     IpAddress.raise_on_save_failure = true
+
+    @bucket_name = 'verbose-ireland'
+    @downloads_regex = /.* verbose-ireland \[(.*)\] (\d+.\d+.\d+.\d+) .* (\d+) REST.GET.OBJECT \d+_TheVerbosePodcast_-_Episode(\d+).mp3 .* - (\d+) (\d+) (\d+) (\d+) "(.*)" "(.*)".*/
   end
 
   # Retrieve S3 logs from the range of dates provided.
@@ -25,90 +29,75 @@ class Snarfer
     if (end_date.nil? or start_date.eql?(end_date)) 
       download_logs(start_date)
     else
-      throw ArgumentError.new("Start date is after end date") if (start_date > end_date)
-      throw ArgumentError.new("Not implemented for ranges > 1 day :P")
+      if (start_date > end_date)
+        throw ArgumentError.new("Start date is after end date") 
+      else
+        throw ArgumentError.new("Not implemented for ranges > 1 day :P")
+      end        
     end
   end
 
-  private
+  protected
 
   def download_logs(date)
     throw ArgumentError.new("Can only get logs in the past") if (date.eql?(Time.now.utc.to_date))
-    logkeys = download_objects('logs/' + date.strftime("%Y-%m-%d"))
+    activity = Activity.new({ start: Time.now.utc})
+    begin
+      activity.downloads = download_objects(@s3.buckets[@bucket_name], 'logs/' + date.strftime("%Y-%m-%d"))
+      activity.end = Time.now.utc
+    rescue StandardError => e
+      activity.exception = e.to_s
+    end
+    activity.save
   end
 
   # Grab all of the objects in the logs bucket for the
   # particular date. If the date is today, then that's 
   # an issue, because the logging may not be finished
   #
-  def download_objects(prefix)
-    bucket = @s3.buckets['verbose-ireland']
-    logs = []
-    unless bucket.nil?
-      full_count = 0
-      bucket.objects.with_prefix(prefix).each { |log|
-        # New database model here and save it :D
-        rg = /.* verbose-ireland \[(.*)\] (\d+.\d+.\d+.\d+) .* REST.GET.OBJECT \d+_TheVerbosePodcast_-_Episode(\d+).mp3 .* - (\d+) (\d+) (\d+) (\d+) "(.*)" "(.*)".*/
-        log.read.each_line { |entry|
-          unless (m = rg.match(entry)).nil?
-            store(
-              DateTime.strptime(m[1], "%d/%b/%Y:%H:%M:%S %z"), 
-              m[2], m[3], m[6], m[9], 
-              (m[8].eql?('-')) ? nil : m[8]
-            )
-          end
-          full_count += 1
-        }
-      }
-      puts "Stored #{full_count} download records"
+  def download_objects(bucket, prefix)
+    log_count = 0
+    bucket.objects.with_prefix(prefix).each do |log|
+      log.read.each_line do |entry|
+        unless (m = @downloads_regex.match(entry)).nil?
+          store(
+            m[3],
+            DateTime.strptime(m[1], "%d/%b/%Y:%H:%M:%S %z"), 
+            m[2], m[4], m[7], m[10], 
+            (m[9].eql?('-')) ? nil : m[9]
+          )
+        end
+      end
+      log_count += 1
     end
-
+    log_count
   end
 
-  # Save recorded download to database
-  def store(date, ip, episode, spent, agent, refer)
-    iprecord = IpAddress.get(ip)
-    if iprecord.nil?
-      iprecord = IpAddress.new({ ip: ip })
-      begin
-        iprecord.save
-      rescue DataMapper::SaveFailureError => e
-        puts e.resource.errors.inspect
-        raise e
-      end
-    end
-
-    useragent = UserAgent.first(description: agent)
-    if useragent.nil?
-      useragent = UserAgent.new({ description: agent })
-      begin
-        useragent.save
-      rescue DataMapper::SaveFailureError => e
-        puts e.resource.errors.inspect
-        raise e
-      end
-    end
-
-    begin
-      d = Download.create(
+  def store(reqid, date, ip, episode, spent, agent, refer)
+    # Only make a new record if there isn't one with
+    # this request id.
+    unless Download.first(arid: reqid)
+      Download.create(
+        arid: reqid,
         at: date, 
         episode: episode.to_i, 
         spent: spent.to_f,
-        user_agent: useragent,
-        ip_address: iprecord,
+        user_agent: user_agent_with_description(agent),
+        ip_address: iprecord_for(ip),
         referrer: refer
       )
-    rescue DataMapper::SaveFailureError => e
-      puts e.resource.errors.inspect
-      raise 
     end
   end
 
-  def find_bucket(name)
-    @s3.buckets.each { |b|
-      return b if (b.name.eql?(name))
-    }
-    nil 
+  def user_agent_with_description(desc)
+    user_agent = UserAgent.first(description: desc) or UserAgent.new({ description: agent })
+    user_agent.save and user_agent
+  end
+
+  def ip_record_for(ip)
+    iprecord = IpAddress.get(ip) or IpAddress.new({ ip: ip })
+    iprecord.visits += 1
+    iprecord.save and iprecord
   end
 
   def condition(date)
