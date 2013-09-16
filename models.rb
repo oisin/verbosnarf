@@ -54,6 +54,6 @@ class Activity
   property :id, Serial
   property :start, DateTime, required: true
   property :end, DateTime, required: true
-  property :downloads, Integer, default: 0
+  property :processed, Integer, default: 0
   property :exception, Text
 end
