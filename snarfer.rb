@@ -17,7 +17,7 @@ class Snarfer
     IpAddress.raise_on_save_failure = true
 
     @bucket_name = 'verbose-ireland'
-    @downloads_regex = /.* verbose-ireland \[(.*)\] (\d+.\d+.\d+.\d+) .* (\d+) REST.GET.OBJECT \d+_TheVerbosePodcast_-_Episode(\d+).mp3 .* - (\d+) (\d+) (\d+) (\d+) "(.*)" "(.*)".*/
+    @downloads_regex = /.* verbose-ireland \[(.*)\] (\d+.\d+.\d+.\d+) .* ([0-9A-F]+) REST.GET.OBJECT \d+_TheVerbosePodcast_-_Episode(\d+).mp3 .* \d+ - (\d+) (\d+) (\d+) (\d+) "(.*)" "(.*)" */
   end
 
   # Retrieve S3 logs from the range of dates provided.
@@ -47,6 +47,7 @@ class Snarfer
       activity.end = Time.now.utc
     rescue StandardError => e
       activity.exception = e.to_s
+      raise e
     end
     activity.save
   end
@@ -65,10 +66,9 @@ class Snarfer
             DateTime.strptime(m[1], "%d/%b/%Y:%H:%M:%S %z"), 
             m[2], m[4], m[7], m[10], 
             (m[9].eql?('-')) ? nil : m[9]
-          )
+          ) && log_count += 1
         end
       end
-      log_count += 1
     end
     log_count
   end
@@ -83,21 +83,23 @@ class Snarfer
         episode: episode.to_i, 
         spent: spent.to_f,
         user_agent: user_agent_with_description(agent),
-        ip_address: iprecord_for(ip),
+        ip_address: ip_record_for(ip),
         referrer: refer
       )
+    else
+      nil
     end
   end
 
   def user_agent_with_description(desc)
-    user_agent = UserAgent.first(description: desc) or UserAgent.new({ description: agent })
-    user_agent.save and user_agent
+    user_agent = UserAgent.first(description: desc) || UserAgent.new({ description: desc })
+    user_agent.save && user_agent
   end
 
   def ip_record_for(ip)
-    iprecord = IpAddress.get(ip) or IpAddress.new({ ip: ip })
+    iprecord = IpAddress.get(ip) || IpAddress.new({ ip: ip })
     iprecord.visits += 1
-    iprecord.save and iprecord
+    iprecord.save && iprecord
   end
 
   def condition(date)
