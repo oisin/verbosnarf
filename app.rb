@@ -1,7 +1,19 @@
 $: << File.dirname(__FILE__)
 
-require 'snarfer'
+require 'sinatra'
+require 'haml'
 
-Database.init(ENV['DATABASE_URL'])
-snarfer = Snarfer.new(ENV['AWS_ACCESS_KEY'], ENV['AWS_SECRET_KEY'])
-snarfer.snarf("25-05-2013")
+class VerboSnarferWebApp < Sinatra::Base
+  configure  do
+    set :public_folder, File.dirname(__FILE__) + '/views'
+    set :app_file, __FILE__
+    set :port, ENV['PORT']
+    puts "Starting on port #{ENV['PORT']}"
+  end
+
+  get '/' do
+    haml :index
+  end
+
+  run! if app_file == $0
+end
