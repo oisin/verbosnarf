@@ -1,17 +1,11 @@
-[![Build Status](https://api.travis-ci.org/oisin/verbosnarf.png?branch=master)](https://travis-ci.org/oisin/verbosnarf)
-
-[![Coverage Status](https://coveralls.io/repos/oisin/verbosnarf/badge.png)](https://coveralls.io/r/oisin/verbosnarf)
-
-[![Gems Up To Date](https://gemnasium.com/oisin/verbosnarf.png)](https://gemnasium.com/oisin/verbosnarf)
-
-[![Code Climate](https://codeclimate.com/github/oisin/verbosnarf.png)](https://codeclimate.com/github/oisin/verbosnarf)
-
 Small app to read and store AWS S3 bucket stats for the Verbose podcast. Each day it fetches the previous day's logfiles for the podcast bucket, isolates those log entries that are relevant for podcast downloads, then saves them in a database. On the front end it provides simple stats visually to show ongoing activity over period, including downloads, locations, regular downloaders and downloading agents.
+
+Uses DataMapper and Postgres, also configured to use SQLite for test runs.
 
 ### TODO
 
- * Make the date range work
  * Create first stab at front end page with simple results!
+ * Make the date range work
  * Apply IP lookup to store country/city data based on IP
  * Mark locations on map
  * Add a way to tell it to read arbitrary dates to fill the db
@@ -51,3 +45,13 @@ referrer        : "https://s3-eu-west-1.amazonaws.com/verbose-ireland/01_TheVerb
 user agent      : "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML, like Gecko) Chrome/26.0.1410.64 Safari/537.31" 
 version id      : -
 ```
+
+[![Build Status](https://api.travis-ci.org/oisin/verbosnarf.png?branch=master)](https://travis-ci.org/oisin/verbosnarf)
+
+[![Coverage Status](https://coveralls.io/repos/oisin/verbosnarf/badge.png)](https://coveralls.io/r/oisin/verbosnarf)
+
+[![Gems Up To Date](https://gemnasium.com/oisin/verbosnarf.png)](https://gemnasium.com/oisin/verbosnarf)
+
+[![Code Climate](https://codeclimate.com/github/oisin/verbosnarf.png)](https://codeclimate.com/github/oisin/verbosnarf)
+
+
