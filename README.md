@@ -46,12 +46,17 @@ user agent      : "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.31 (KHTML
 version id      : -
 ```
 
+<tr>
+<td>
 [![Build Status](https://api.travis-ci.org/oisin/verbosnarf.png?branch=master)](https://travis-ci.org/oisin/verbosnarf)
-
-[![Coverage Status](https://coveralls.io/repos/oisin/verbosnarf/badge.png)](https://coveralls.io/r/oisin/verbosnarf)
-
-[![Gems Up To Date](https://gemnasium.com/oisin/verbosnarf.png)](https://gemnasium.com/oisin/verbosnarf)
-
+</td>
+<td>[![Coverage Status](https://coveralls.io/repos/oisin/verbosnarf/badge.png)](https://coveralls.io/r/oisin/verbosnarf)
+</td>
+<td>
 [![Code Climate](https://codeclimate.com/github/oisin/verbosnarf.png)](https://codeclimate.com/github/oisin/verbosnarf)
-
+</td>
+<td>
+[![Gems Up To Date](https://gemnasium.com/oisin/verbosnarf.png)](https://gemnasium.com/oisin/verbosnarf)
+</td>
+</tr>
 
