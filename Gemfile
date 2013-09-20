@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'aws-sdk'
+gem 'aws-sdk', '~> 1.19.0'
 gem 'thin'
 gem 'datamapper'
 gem 'dm-postgres-adapter'
