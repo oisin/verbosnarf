@@ -1,16 +1,8 @@
-$: << File.dirname(__FILE__) + "/.."
+$: << File.dirname(__FILE__) + "/../.."
 
-require 'timecop'
-require 'dm-aggregates'
+require_relative '../helper'
 
-# Produce local and Coveralls coverage
-require 'coveralls'
-Coveralls.wear!
 SimpleCov.command_name 'Unit Tests'
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-  SimpleCov::Formatter::HTMLFormatter,
-  Coveralls::SimpleCov::Formatter
-]
 
 require 'minitest/autorun'
 require 'snarfer'
