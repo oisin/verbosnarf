@@ -1,2 +1,13 @@
-%h1
-  HI THERES!!
+.container
+  - @episodes.each do |ep|
+    .episode-container
+      %p.episode-title
+        Episode 
+        = ep
+        &nbsp;&raquo;&raquo;
+        = download_count(ep)
+
+      .downloads-graph-container
+        .downloads-graph-y{ id: "episode-#{ep}-y-axis" }
+        .downloads-graph{ id: "episode-#{ep}-graph" }
+        .downloads-graph-x{ id: "episode-#{ep}-x-axis" }

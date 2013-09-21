@@ -1,0 +1,70 @@
+h3,
+p {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+}
+
+body {
+  padding-top: 0;
+}
+
+.downloads-graph-container {
+  position: relative;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.downloads-graph {
+  position: relative;
+  left: 40px;
+}
+
+.downloads-graph-y {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 40px;
+}
+
+/* Padding left corresponds to width of y axis */
+.downloads-graph-x {
+  padding-left: 40px;  
+}
+
+.container {
+  padding-top: 40px;
+}
+
+.episode-container {
+  padding-bottom: 40px;
+  display: block;
+}
+
+.header {
+  border-bottom: solid;
+  background-color: #EEE0E5 
+}
+
+.header h3 {
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: 300;
+  padding-left: 20px;
+}
+
+.episode-title {
+  font-size: 1.5em;
+  border-bottom-style: solid;
+  border-width: 1px;
+  padding-left: 20px;
+}
+
+.rickshaw_graph .x_ticks_d3 text {
+  opacity: 0.5;
+  font-family: "Source Sans Pro", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 12px;
+  pointer-events: none;
+}
+
+.wibble {
+  background-color: #ff0000;
+}
+
