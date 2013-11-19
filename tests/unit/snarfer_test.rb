@@ -61,31 +61,41 @@ eolog
     assert_recording(content, 1)
   end
 
+  def test_date_range
+    s3 = MiniTest::Mock.new
+    AWS::S3.stub :new, s3 do
+      s = Snarfer.new("access", "secret")
+      assert_raises(ArgumentError) {
+        s.snarf(Time.now.utc.to_date)
+      }
+    end
+  end
+
   def assert_recording(content, valid_count)
     now = Time.now.utc
     yesterday = now.to_date - 1
     
     logs = MiniTest::Mock.new
     logs.expect(:with_prefix, content, ["logs/#{yesterday.strftime('%Y-%m-%d')}"])
-
+  
     bucket = MiniTest::Mock.new
     bucket.expect(:objects, logs, [])
-
+  
     s3 = MiniTest::Mock.new
     s3.expect(:buckets, { 'verbose-ireland' => bucket})
-
+  
     Timecop.freeze(now) do
       AWS::S3.stub :new, s3 do
         s = Snarfer.new("access", "secret")
-
+  
         assert_equal 0, Activity.count
         s.snarf(yesterday)
         assert_equal 1, Activity.count
-
+  
         activity = Activity.first
         assert_equal valid_count, activity.processed
         assert_nil activity.exception
-
+  
         # Comparing the following as strings to avoid
         # DateTime deep structure comparisons
         assert_equal DateTime.now.to_s, activity.start.to_s
@@ -93,6 +103,4 @@ eolog
       end
     end
   end 
-
-
 end

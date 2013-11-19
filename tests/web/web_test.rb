@@ -9,6 +9,7 @@ require 'app'
 
 class WebAppTests < Minitest::Unit::TestCase
 	def test_pass
+    puts "\nWeb tests aren't implemented yet"
     assert true
   end
 end
