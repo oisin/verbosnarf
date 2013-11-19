@@ -40,6 +40,7 @@ class Snarfer
   protected
 
   def download_logs(date)
+    puts("Download logs...")
     throw ArgumentError.new("Can only get logs in the past") if (date.eql?(Time.now.utc.to_date))
     activity = Activity.new({ start: Time.now.utc})
     begin
@@ -57,9 +58,12 @@ class Snarfer
   # an issue, because the logging may not be finished
   #
   def download_objects(bucket, prefix)
+    puts("Download objects with prefix <#{prefix}>...")
     log_count = 0
     bucket.objects.with_prefix(prefix).each do |log|
-      log.read.each_line do |entry|
+      puts("Log found: #{log.inspect}")
+        log.read.each_line do |entry|
+        puts("Log read: #{entry}")
         unless (m = @downloads_regex.match(entry)).nil?
           store(
             m[3],
@@ -76,16 +80,18 @@ class Snarfer
   def store(reqid, date, ip, episode, spent, agent, refer)
     # Only make a new record if there isn't one with
     # this request id.
+    puts("Storing object...")
     unless Download.first(arid: reqid)
       Download.create(
         arid: reqid,
         at: date, 
-        episode: episode.to_i, 
+        episode: episode.to_i,  # TODO: change this 
         spent: spent.to_f,
         user_agent: user_agent_with_description(agent),
         ip_address: ip_record_for(ip),
         referrer: refer
       )
+      puts("New download by #{refer}")
     else
       nil
     end
