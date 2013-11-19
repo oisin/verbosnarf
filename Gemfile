@@ -7,6 +7,8 @@ gem 'rake'
 gem 'sinatra', '~> 1.4.3'
 gem 'haml'
 gem 'oj'
+gem 'sucker_punch'
+gem 'rufus-scheduler'
 
 # Using thin because it has more applicability on more cloud
 # plaforms, eschewing unicorn, etc.
