@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.1.2'
+
 gem 'aws-sdk', '~> 1.19.0'
 gem 'datamapper'
 gem 'dm-postgres-adapter'
@@ -13,10 +15,6 @@ gem 'rufus-scheduler'
 # Using thin because it has more applicability on more cloud
 # plaforms, eschewing unicorn, etc.
 gem 'thin'
-
-group :development do
-  gem 'debugger'
-end
 
 group :test do
   gem 'dm-sqlite-adapter'
