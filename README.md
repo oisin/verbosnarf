@@ -6,6 +6,7 @@ Uses DataMapper and Postgres, also configured to use SQLite for test runs.
 
  * Create first stab at front end page with simple results!
  * Make the date range work
+ * Proper stuff for charting - see [Epoch](http://fastly.github.io/epoch/getting-started/)
  * Apply IP lookup to store country/city data based on IP
  * Mark locations on map
  * Add a way to tell it to read arbitrary dates to fill the db
