@@ -1,9 +1,8 @@
+require 'coveralls'
+require 'simplecov'
+
 require 'timecop'
 require 'dm-aggregates'
-
-# Produce local and Coveralls coverage
-require 'coveralls'
-Coveralls.wear!
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::HTMLFormatter,
@@ -11,3 +10,4 @@ SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
 ]
 
 SimpleCov.add_filter("test/*")
+SimpleCov.start
