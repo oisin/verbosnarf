@@ -1,3 +1,8 @@
+|Public Health Warning|
+|:-:|
+| Previously, this was a work in progress. Now it's just a historical work. Please consider this project _OBSOLETE_
+|**DO NOT USE**
+
 Small app to read and store AWS S3 bucket stats for the Verbose podcast. Each day it fetches the previous day's logfiles for the podcast bucket, isolates those log entries that are relevant for podcast downloads, then saves them in a database. On the front end it provides simple stats visually to show ongoing activity over period, including downloads, locations, regular downloaders and downloading agents.
 
 Uses DataMapper and Postgres, also configured to use SQLite for test runs.
